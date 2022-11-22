@@ -1,3 +1,13 @@
+<<<<<<< HEAD
+import telebot
+import cv2
+import moviepy.editor as mp
+
+from telebot import types
+from utils import is_detected
+
+path = '/home/pi/project/'
+=======
 # import telebot
 # import time
 # import os
@@ -166,6 +176,7 @@ import moviepy.editor as mp
 
 import cv2
 
+>>>>>>> bc2e26bf9ba36342f1f5e884fee18d6c8ca5cfb9
 TOKEN = '5777109239:AAF1zwW2BkCF5pwFVDQNVj2grLJGGUrJqSc'
 URL = 'https://api.telegram.org/bot'
 
@@ -174,6 +185,27 @@ keyboard = types.InlineKeyboardMarkup()
 
 backSub = cv2.createBackgroundSubtractorMOG2(50, 16, True)
 stop_track = False
+<<<<<<< HEAD
+stream = None
+
+print("1. Success: Telegram Bot запущен")
+
+
+def start_security(id):
+    global stop_track
+    global stream
+    stream = cv2.VideoCapture(0)
+
+    if not stream.isOpened():
+        print("ERROR: No stream")
+        exit()
+    print("Success: Камера захвачена")
+
+    frame_width = int(stream.get(3))
+    frame_height = int(stream.get(4))
+    size = (frame_width, frame_height)
+    video_file = 'res.avi'
+=======
 
 def make_video():
     stream = cv2.VideoCapture(0)
@@ -216,11 +248,33 @@ def start_security(id):
     stream = cv2.VideoCapture(0)
     frame_width = int(stream.get(3))
     frame_height = int(stream.get(4))
+>>>>>>> bc2e26bf9ba36342f1f5e884fee18d6c8ca5cfb9
     stream.set(cv2.CAP_PROP_FRAME_WIDTH, frame_width)
     stream.set(cv2.CAP_PROP_FRAME_HEIGHT, frame_height)
     stop_track = True
 
     while stop_track:
+<<<<<<< HEAD
+        _, frame = stream.read()
+        if is_detected(frame):
+            fps = 15.0
+            result = cv2.VideoWriter(video_file, cv2.VideoWriter_fourcc(*'MJPG'), fps, size)
+            i = 0
+            while True:
+                ret, frame = stream.read()
+                result.write(frame)
+                i = i + 1
+                if i > 74:
+                    break
+
+            result.release()
+            clip = mp.VideoFileClip(path + 'res.avi')
+            clip.write_videofile(path + 'res.mp4')
+            bot.send_video(id, open(path + 'res.mp4', 'rb'), None, 'Text')
+
+    stream.release()
+
+=======
 
         # шаг 1: получить изображение
         _, frame = stream.read()
@@ -261,6 +315,7 @@ def start_security(id):
             path = make_video()
             bot.send_message(id, 'Attantion! Enime: detected')
             bot.send_video(id, open(path, 'rb'), None, 'Text')
+>>>>>>> bc2e26bf9ba36342f1f5e884fee18d6c8ca5cfb9
 
 @bot.message_handler(commands=['start', 'help'])
 def start(message):
@@ -291,8 +346,24 @@ def back(message):
 @bot.message_handler(commands=['take_picture'])
 def get_picture(message):
     bot.send_message(message.chat.id, 'Вот ваше фото!')
+<<<<<<< HEAD
+    global stream
+    stream = cv2.VideoCapture(0)
+    if not stream.isOpened():
+        print("No stream")
+        exit()
+    frame_width = int(stream.get(3))
+    frame_height = int(stream.get(4))
+    stream.set(cv2.CAP_PROP_FRAME_WIDTH, frame_width)
+    stream.set(cv2.CAP_PROP_FRAME_HEIGHT, frame_height)
+    res, pic = stream.read()
+    stream.release()
+    cv2.imwrite(path + 'photo.png', pic)
+    bot.send_photo(message.chat.id, open(path + 'photo.png', 'rb'))
+=======
     bot.send_video(message.chat.id,
                    open('/Users/evgenijsmirnov/PycharmProjects/SecurityBot/result-gifs/home.mp4', 'rb'), None, 'Text')
+>>>>>>> bc2e26bf9ba36342f1f5e884fee18d6c8ca5cfb9
     back(message)
 
 
@@ -330,9 +401,12 @@ def random_answers(message):
 
 
 bot.polling(none_stop=True, interval=0)
+<<<<<<< HEAD
+=======
 
 # clip = mp.VideoFileClip("/home/pi/project/res1.avi")
 
 # clip.write_videofile("/home/pi/project/res.mp4")
 
 #     os.popen("ffmpeg -y -i 'res.avi' -ac 2 -b:v 2000k -c:a aac -c:v libx264 -b:a 160k -vprofile high -bf 0 -strict experimental -f mp4 'res.mp4'".format(input = '/home/pi/project/res.avi', output = '/home/pi/project/res.mp4'))
+>>>>>>> bc2e26bf9ba36342f1f5e884fee18d6c8ca5cfb9
